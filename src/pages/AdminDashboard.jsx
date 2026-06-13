@@ -960,7 +960,7 @@ const AdminDashboard = () => {
           <div style={styles.logoSection}>
             <div style={styles.logoBox}>N</div>
             <div>
-              <h2 style={styles.logoTitle}>Nexus-medeling-School</h2>
+              <h2 style={styles.logoTitle}>Nexus-modeling-School</h2>
               <p style={styles.logoSub}>Admin Portal</p>
             </div>
           </div>
