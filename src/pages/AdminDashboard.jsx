@@ -24,6 +24,9 @@ const AdminDashboard = () => {
   const [statsLoading, setStatsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
+  // Timestamp state
+  const [currentTimestamp, setCurrentTimestamp] = useState(new Date());
+  
   // Search and Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [courseFilter, setCourseFilter] = useState('All');
@@ -52,6 +55,42 @@ const AdminDashboard = () => {
   const [editPhotoFile, setEditPhotoFile] = useState(null);
   const [editPhotoPreview, setEditPhotoPreview] = useState('');
   const [editLoading, setEditLoading] = useState(false);
+
+  // Update timestamp every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTimestamp(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format timestamp helper
+  const formatTimestamp = (date) => {
+    return date.toLocaleString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+  };
+
+  // Format registered date helper
+  const formatRegisteredDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
 
   // Fetch stats and student lists
   const fetchStats = async () => {
@@ -404,6 +443,29 @@ const AdminDashboard = () => {
       fontWeight: 'bold',
       fontSize: '12px',
       color: '#4f46e5',
+    },
+    timestampContainer: {
+      background: '#f8fafc',
+      borderRadius: '12px',
+      padding: '12px 20px',
+      border: '1px solid #e2e8f0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: '24px',
+    },
+    timestampLabel: {
+      fontSize: '11px',
+      fontWeight: '800',
+      color: '#94a3b8',
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em',
+    },
+    timestampValue: {
+      fontSize: '13px',
+      fontWeight: '700',
+      color: '#1e293b',
+      fontFamily: 'monospace',
     },
     contentArea: {
       padding: '32px',
@@ -793,7 +855,7 @@ const AdminDashboard = () => {
       boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)',
     },
 
-    // Edit Profile Modal Overlay Styles (Matching screenshot)
+    // Edit Profile Modal Overlay Styles
     modalOverlay: {
       position: 'fixed',
       top: 0,
@@ -934,6 +996,13 @@ const AdminDashboard = () => {
       fontWeight: '700',
       cursor: 'pointer',
       boxShadow: '0 4px 12px rgba(79, 70, 229, 0.15)',
+    },
+    registeredDateCell: {
+      fontSize: '11px',
+      fontWeight: '600',
+      color: '#475569',
+      fontFamily: 'monospace',
+      whiteSpace: 'nowrap',
     }
   };
 
@@ -981,30 +1050,6 @@ const AdminDashboard = () => {
               <FaUsers style={{ fontSize: '16px' }} />
               <span>Students</span>
             </button>
-
-            {/* <button
-              onClick={() => toast.success('Courses tab coming soon')}
-              style={styles.navItem(false)}
-            > */}
-              {/* <FaBookOpen style={{ fontSize: '16px' }} />
-              <span>Courses</span>
-            </button>
-
-            <button
-              onClick={() => toast.success('Reports tab coming soon')}
-              style={styles.navItem(false)}
-            >
-              <FaFileAlt style={{ fontSize: '16px' }} />
-              <span>Reports</span>
-            </button>
-
-            <button
-              onClick={() => toast.success('Settings tab coming soon')}
-              style={styles.navItem(false)}
-            >
-              <FaCog style={{ fontSize: '16px' }} />
-              <span>Settings</span>
-            </button> */}
           </nav>
         </div>
 
@@ -1034,7 +1079,7 @@ const AdminDashboard = () => {
             <FaSearch style={{ color: '#94a3b8', fontSize: '14px' }} />
             <input
               type="text"
-              placeholder="Search analytics..."
+              placeholder="Search students..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={styles.searchInput}
@@ -1061,6 +1106,12 @@ const AdminDashboard = () => {
         {/* Tab 1: Dashboard Overview */}
         {activeTab === 'dashboard' && (
           <div style={styles.contentArea}>
+            {/* Timestamp Display */}
+            <div style={styles.timestampContainer}>
+              <span style={styles.timestampLabel}>🕒 Live Dashboard Timestamp</span>
+              <span style={styles.timestampValue}>{formatTimestamp(currentTimestamp)}</span>
+            </div>
+
             {statsLoading ? (
               <div style={{ textAlign: 'center', padding: '100px 0', color: '#94a3b8', fontWeight: 'bold' }}>
                 Loading Analytics...
@@ -1260,7 +1311,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <footer style={styles.footer}>
-                  © 2024 EduAcademy Systems • Academic Excellence Through Data
+                  © 2024 Nexus Modeling School • Academic Excellence Through Data
                 </footer>
               </>
             ) : null}
@@ -1270,6 +1321,12 @@ const AdminDashboard = () => {
         {/* Tab 2: Students Directory */}
         {activeTab === 'students' && (
           <div style={styles.contentArea}>
+            {/* Timestamp Display */}
+            <div style={styles.timestampContainer}>
+              <span style={styles.timestampLabel}>🕒 Student Directory Timestamp</span>
+              <span style={styles.timestampValue}>{formatTimestamp(currentTimestamp)}</span>
+            </div>
+
             <div>
               <h1 style={styles.headingTitle}>Student Directory</h1>
               <p style={styles.headingSub}>Manage and track enrollment status for the current academic session.</p>
@@ -1324,13 +1381,13 @@ const AdminDashboard = () => {
                   <label style={styles.filterLabel}>Total Records</label>
                   <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', margin: '4px 0 0 0' }}>{filteredStudents.length}</h3>
                 </div>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#e0e7ff', display: 'flex', alignItems: 'center', justifyCenter: 'center', color: '#4f46e5' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#e0e7ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#4f46e5' }}>
                   <FaUserPlus style={{ margin: 'auto' }} />
                 </div>
               </div>
             </div>
 
-            {/* Students Table */}
+            {/* Students Table with Registered Date Column */}
             <div style={styles.tableContainer}>
               {loading ? (
                 <div style={{ textAlign: 'center', padding: '100px 0', color: '#94a3b8', fontWeight: 'bold' }}>
@@ -1347,6 +1404,7 @@ const AdminDashboard = () => {
                         <th style={styles.th}>Phone</th>
                         <th style={styles.th}>Course</th>
                         <th style={styles.th}>Student Type</th>
+                        <th style={styles.th}>Registered Date</th>
                         <th style={styles.th}>Status</th>
                         <th style={styles.th}>Actions</th>
                       </tr>
@@ -1383,6 +1441,11 @@ const AdminDashboard = () => {
                             <td style={styles.td}>
                               <span style={styles.badge(student.studentType)}>
                                 {student.studentType || 'New'}
+                              </span>
+                            </td>
+                            <td style={styles.td}>
+                              <span style={styles.registeredDateCell}>
+                                {formatRegisteredDate(student.createdAt || student.registeredDate || student.date)}
                               </span>
                             </td>
                             <td style={styles.td}>
@@ -1431,7 +1494,7 @@ const AdminDashboard = () => {
 
             {/* Bottom Actions Row */}
             <div style={styles.syncRow}>
-              <p style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '800', uppercase: true, letterSpacing: '0.05em', margin: 0 }}>
+              <p style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>
                 Showing 1 - {filteredStudents.length} of {filteredStudents.length} entries
               </p>
               
@@ -1447,7 +1510,7 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Edit Student Modal Overlay - Matching "Update Student Profile" mockup */}
+      {/* Edit Student Modal Overlay */}
       {editingStudent && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalContainer}>
@@ -1553,7 +1616,7 @@ const AdminDashboard = () => {
                 {/* Section 1: Personal Information */}
                 <div style={{ marginBottom: '32px' }}>
                   <h3 style={styles.modalSectionTitle}>
-                    <span style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#e0e7ff', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyCenter: 'center', fontSize: '12px' }}>👤</span>
+                    <span style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#e0e7ff', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>👤</span>
                     <span>Personal Information</span>
                   </h3>
 
@@ -1615,7 +1678,7 @@ const AdminDashboard = () => {
                 {/* Section 2: Academic & Modeling Selection */}
                 <div>
                   <h3 style={styles.modalSectionTitle}>
-                    <span style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#d1fae5', color: '#059669', display: 'flex', alignItems: 'center', justifyCenter: 'center', fontSize: '12px' }}>🎓</span>
+                    <span style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#d1fae5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>🎓</span>
                     <span>Academic Selection</span>
                   </h3>
 
@@ -1753,6 +1816,9 @@ const AdminDashboard = () => {
               <div style={{ textAlign: 'center' }}>
                 <h3 style={{ margin: 0, fontSize: '20px', fontWeight: '900', color: '#0f172a' }}>{selectedDetailStudent.fullName}</h3>
                 <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#94a3b8', fontWeight: '700' }}>ID: {selectedDetailStudent.idNumber}</p>
+                <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#4f46e5', fontWeight: '600' }}>
+                  Registered: {formatRegisteredDate(selectedDetailStudent.createdAt || selectedDetailStudent.registeredDate)}
+                </p>
               </div>
 
               <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', background: '#f8fafc', padding: '20px', borderRadius: '16px', border: '1px solid #f1f5f9', boxSizing: 'border-box' }}>
