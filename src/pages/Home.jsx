@@ -520,7 +520,7 @@ const Home = () => {
     { key: 'totalStudents', label: 'Active Students', suffix: '+' },
     { key: 'graduates', label: 'Successful Graduates', suffix: '+' },
     { key: 'experts', label: 'Industry Experts', suffix: '+' },
-    { key: 'workshops', label: 'Workshops Conducted', suffix: '+' }
+    // { key: 'workshops', label: 'Workshops Conducted', suffix: '+' }
   ];
 
   return (
