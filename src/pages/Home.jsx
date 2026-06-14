@@ -15,7 +15,7 @@ const Home = () => {
     approvedStudents: 0,
     graduates: 0,
     experts: 0,
-    workshops: 24,
+    workshops: 0,
     maleCount: 0,
     femaleCount: 0
   });
@@ -45,7 +45,7 @@ const Home = () => {
           graduates: graduatesCount,
           experts: expertsCount,
           conducted: conductedCount,
-          workshops: 24, // Static or could be fetched from a workshops API
+          workshops: 0, // Static or could be fetched from a workshops API
           maleCount: data.genderDistribution?.male || 0,
           femaleCount: data.genderDistribution?.female || 0,
           pendingStudents: data.statusDistribution?.pending || 0
@@ -57,7 +57,7 @@ const Home = () => {
           approvedStudents: 142,
           graduates: 89,
           experts: 12,
-          workshops: 24,
+          workshops: 0,
           maleCount: 48,
           femaleCount: 108
         });
@@ -71,7 +71,7 @@ const Home = () => {
         approvedStudents: 142,
         graduates: 89,
         experts: 12,
-        workshops: 24,
+        workshops: 0,
         maleCount: 48,
         femaleCount: 108
       });
