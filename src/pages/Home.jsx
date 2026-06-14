@@ -537,7 +537,9 @@ const Home = () => {
           
           <div style={styles.contactBar}>
             <div style={styles.contactBadge}>
-              📞 +251940848080
+               <a href="tel:+251940848080" style={styles.itemValue}>
+               📞 +251 940 848 080
+              </a>
             </div>
           </div>
         </div>
