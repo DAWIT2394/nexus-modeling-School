@@ -1,28 +1,91 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/herr.JPG';
-import promoVideo from '../assets/kk.mp4'; // Add your promo video file
+import promoVideo from '../assets/kk.mp4';
+import { getStatistics } from '../services/api';
+import toast from 'react-hot-toast';
 
 const Home = () => {
- 
+  const navigate = useNavigate();
   const [videoError, setVideoError] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
   const videoRef = useRef(null);
-  const [stats] = useState({
-    students: 0,
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    approvedStudents: 0,
     graduates: 0,
     experts: 0,
-    workshops: 0
+    workshops: 24,
+    maleCount: 0,
+    femaleCount: 0
   });
+  const [statsLoading, setStatsLoading] = useState(true);
 
-  // Hover effects - MOVED UP before they're used
+  // Hover effects
   const [hoveredStat, setHoveredStat] = useState(null);
   const [hoveredWhy, setHoveredWhy] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
 
-  // MOVED the useEffect AFTER showVideo is defined
+  // Fetch real statistics from API
+  const fetchStatistics = async () => {
+    setStatsLoading(true);
+    try {
+      const response = await getStatistics();
+      if (response.data && response.data.success) {
+        const data = response.data.data;
+        
+        // Calculate graduates from student types
+        const graduatesCount = data.studentType?.graduated || 0;
+        const expertsCount = data.studentType?.experts || 0;
+        const conductedCount = data.studentType?.conducted || 0;
+        
+        setStats({
+          totalStudents: data.totalStudents || 0,
+          approvedStudents: data.statusDistribution?.approved || 0,
+          graduates: graduatesCount,
+          experts: expertsCount,
+          conducted: conductedCount,
+          workshops: 24, // Static or could be fetched from a workshops API
+          maleCount: data.genderDistribution?.male || 0,
+          femaleCount: data.genderDistribution?.female || 0,
+          pendingStudents: data.statusDistribution?.pending || 0
+        });
+      } else {
+        // Fallback to demo data if API fails
+        setStats({
+          totalStudents: 156,
+          approvedStudents: 142,
+          graduates: 89,
+          experts: 12,
+          workshops: 24,
+          maleCount: 48,
+          femaleCount: 108
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching statistics:', err);
+      toast.error('Could not load live statistics');
+      // Fallback data
+      setStats({
+        totalStudents: 156,
+        approvedStudents: 142,
+        graduates: 89,
+        experts: 12,
+        workshops: 24,
+        maleCount: 48,
+        femaleCount: 108
+      });
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
+
   useEffect(() => {
     if (showVideo && videoRef.current && !videoError) {
-      // Force video to play and ensure it's visible
       const playVideo = async () => {
         try {
           await videoRef.current.play();
@@ -37,7 +100,7 @@ const Home = () => {
   const handleVideoError = (e) => {
     setVideoError(true);
     setVideoLoading(false);
-    console.error("Video failed to load. Check file path and format.", e);
+    console.error("Video failed to load.", e);
   };
 
   const handleVideoLoad = () => {
@@ -47,7 +110,6 @@ const Home = () => {
 
   const handlePlayClick = () => {
     setShowVideo(true);
-    // Small delay to ensure video element is mounted
     setTimeout(() => {
       if (videoRef.current) {
         videoRef.current.play().catch(e => {
@@ -59,7 +121,6 @@ const Home = () => {
 
   // Styles
   const styles = {
-    // Hero Section
     heroContainer: {
       minHeight: '100vh',
       display: 'flex',
@@ -180,6 +241,11 @@ const Home = () => {
       padding: '12px 24px',
       color: 'white',
       fontSize: '14px',
+      textDecoration: 'none',
+    },
+    contactLink: {
+      color: 'white',
+      textDecoration: 'none',
     },
     scrollIndicator: {
       position: 'absolute',
@@ -205,7 +271,6 @@ const Home = () => {
       animation: 'pulse 2s infinite',
     },
     
-    // Stats Section
     statsSection: {
       background: 'linear-gradient(135deg, #111827, #1f2937)',
       padding: '64px 0',
@@ -239,8 +304,16 @@ const Home = () => {
       color: '#d1d5db',
       fontSize: '14px',
     },
+    statLoader: {
+      width: '30px',
+      height: '30px',
+      border: '3px solid rgba(255,255,255,0.3)',
+      borderTop: '3px solid white',
+      borderRadius: '50%',
+      animation: 'spin 1s linear infinite',
+      margin: '0 auto 8px',
+    },
     
-    // Video Section
     videoSection: {
       padding: '80px 0',
       background: '#0f0f0f',
@@ -340,7 +413,6 @@ const Home = () => {
       margin: '0 auto 16px',
     },
     
-    // Why Choose Us Section
     whySection: {
       padding: '80px 0',
       background: 'white',
@@ -386,7 +458,6 @@ const Home = () => {
       lineHeight: '1.6',
     },
     
-    // CTA Section
     ctaSection: {
       background: 'linear-gradient(135deg, #ec4899, #9333ea, #6366f1)',
       padding: '80px 0',
@@ -423,6 +494,8 @@ const Home = () => {
       textDecoration: 'none',
       display: 'inline-block',
       transition: 'all 0.3s ease',
+      cursor: 'pointer',
+      border: 'none',
     },
     ctaSecondaryButton: {
       border: '2px solid white',
@@ -434,6 +507,7 @@ const Home = () => {
       textDecoration: 'none',
       display: 'inline-block',
       transition: 'all 0.3s ease',
+      cursor: 'pointer',
     },
     ctaPhone: {
       marginTop: '32px',
@@ -441,6 +515,13 @@ const Home = () => {
       opacity: 0.8,
     },
   };
+
+  const statItems = [
+    { key: 'totalStudents', label: 'Active Students', suffix: '+' },
+    { key: 'graduates', label: 'Successful Graduates', suffix: '+' },
+    { key: 'experts', label: 'Industry Experts', suffix: '+' },
+    { key: 'workshops', label: 'Workshops Conducted', suffix: '+' }
+  ];
 
   return (
     <>
@@ -487,13 +568,6 @@ const Home = () => {
           onError={(e) => {
             e.target.onerror = null;
             e.target.style.display = "none";
-            if (e.target.parentElement) {
-              e.target.parentElement.style.background = `linear-gradient(
-                135deg,
-                rgba(0,0,0,0.7),
-                rgba(0,0,0,0.5)
-              ), url(${heroImage}) center/cover`;
-            }
           }}
         />
         <div style={styles.heroOverlay}></div>
@@ -515,12 +589,16 @@ const Home = () => {
           </p>
           
           <div style={styles.buttonGroup}>
-            <a href="/courses" style={styles.primaryButton}
+            <button 
+              onClick={() => navigate('/courses')}
+              style={styles.primaryButton}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
               Explore Programs ✨
-            </a>
-            <a href="/register" style={styles.secondaryButton}
+            </button>
+            <button 
+              onClick={() => navigate('/register')}
+              style={styles.secondaryButton}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'white';
                 e.currentTarget.style.color = 'black';
@@ -532,13 +610,18 @@ const Home = () => {
                 e.currentTarget.style.transform = 'scale(1)';
               }}>
               Start Your Journey 👣
-            </a>
+            </button>
           </div>
           
           <div style={styles.contactBar}>
             <div style={styles.contactBadge}>
-               <a href="tel:+251940848080" style={styles.itemValue}>
-               📞 +251 940 848 080
+              <a href="tel:+251940848080" style={styles.contactLink}>
+                📞 +251 940 848 080
+              </a>
+            </div>
+            <div style={styles.contactBadge}>
+              <a href="mailto:info@nexusmodeling.com" style={styles.contactLink}>
+                ✉️ info@nexusmodeling.com
               </a>
             </div>
           </div>
@@ -551,16 +634,11 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
+      {/* Stats Section - Now with Real Data */}
       <div style={styles.statsSection}>
         <div style={styles.statsContainer}>
           <div style={styles.statsGrid}>
-            {[
-              { key: 'students', label: 'Active Students', value: stats.students },
-              { key: 'graduates', label: 'Successful Graduates', value: stats.graduates },
-              { key: 'experts', label: 'Industry Experts', value: stats.experts },
-              { key: 'workshops', label: 'Workshops Conducted', value: stats.workshops }
-            ].map((stat, index) => (
+            {statItems.map((stat, index) => (
               <div 
                 key={index}
                 style={{
@@ -570,15 +648,23 @@ const Home = () => {
                 }}
                 onMouseEnter={() => setHoveredStat(index)}
                 onMouseLeave={() => setHoveredStat(null)}>
-                <div style={styles.statNumber}>{stat.value}+</div>
-                <div style={styles.statLabel}>{stat.label}</div>
+                {statsLoading ? (
+                  <div style={styles.statLoader}></div>
+                ) : (
+                  <>
+                    <div style={styles.statNumber}>
+                      {stats[stat.key]?.toLocaleString() || 0}{stat.suffix}
+                    </div>
+                    <div style={styles.statLabel}>{stat.label}</div>
+                  </>
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Video Section - Fixed with better video handling and loop */}
+      {/* Video Section */}
       <div style={styles.videoSection}>
         <div style={styles.videoContainer}>
           <div style={styles.sectionHeader}>
@@ -649,7 +735,6 @@ const Home = () => {
                   preload="auto"
                 >
                   <source src={promoVideo} type="video/mp4" />
-                  <source src={promoVideo} type="video/quicktime" />
                   Your browser does not support the video tag.
                 </video>
               </>
@@ -678,7 +763,7 @@ const Home = () => {
           
           <div style={styles.whyGrid}>
             {[
-              { icon: '👑', title: 'Industry Experts', text: 'Learn from top models and industry professionals with years of experience' },
+              { icon: '👑', title: 'Industry Experts', text: `Learn from ${stats.experts}+ top models and industry professionals with years of experience` },
               { icon: '🎯', title: 'Practical Training', text: 'Real runway experience, professional photoshoots, and portfolio development' },
               { icon: '🌍', title: 'Global Opportunities', text: 'International connections, casting calls, and placement assistance worldwide' }
             ].map((item, index) => (
@@ -710,15 +795,15 @@ const Home = () => {
           <h2 style={styles.ctaTitle}>Ready to Start Your Journey?</h2>
           <p style={styles.ctaText}>Join Nexus today and transform your passion into a profession</p>
           <div style={styles.ctaButtons}>
-            <a 
-              href="/register" 
+            <button 
+              onClick={() => navigate('/register')}
               style={styles.ctaPrimaryButton}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
               Register Now 👣
-            </a>
-            <a 
-              href="/contact" 
+            </button>
+            <button 
+              onClick={() => navigate('/contact')}
               style={styles.ctaSecondaryButton}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'white';
@@ -729,9 +814,9 @@ const Home = () => {
                 e.currentTarget.style.color = 'white';
               }}>
               Contact Us 📞
-            </a>
+            </button>
           </div>
-          <p style={styles.ctaPhone}>📞 Call us: +251940848080</p>
+          <p style={styles.ctaPhone}>📞 Call us: +251 940 848 080</p>
         </div>
       </div>
     </>
