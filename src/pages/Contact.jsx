@@ -178,7 +178,8 @@ const Contact = () => {
             </div>
             <div>
               <p style={styles.itemLabel}>Our Campus</p>
-              <span style={styles.itemValue}>Bole Road, Edna Mall</span>
+              <span style={styles.itemValue}>                አያት አደባባይ ወርድ ብሎ ዙርያሽ ሞል ፍት ለፍት ለሚ ኩራ ክ/ከተማ ጋር
+</span>
               <p style={styles.itemSub}>Addis Ababa, Ethiopia</p>
             </div>
           </div>

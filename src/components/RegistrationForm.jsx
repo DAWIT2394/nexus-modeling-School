@@ -362,10 +362,10 @@ const RegistrationForm = () => {
   ];
 
   const durationOptions = [
-    { value: '6-10 Months', label: '📘 6-10 Months - High Fashion' },
-    { value: '4-8 Months', label: '📗 4-8 Months - Runway/Fitness/Curve' },
-    { value: '3-6 Months', label: '📙 3-6 Months - Commercial/Photo' },
-    { value: '2-4 Months', label: '📕 2-4 Months - Parts Model' },
+    { value: '6-10 Months', label: '📘 3 Months ' },
+    { value: '4-8 Months', label: '📗 6 Months ' },
+    { value: '3-6 Months', label: '📙 10 Months ' },
+    // { value: '2-4 Months', label: '📕 2-4 Months - Parts Model' },
   ];
 
   const handleSubmit = async (e) => {
