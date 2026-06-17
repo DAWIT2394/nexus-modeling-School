@@ -161,63 +161,63 @@ const Courses = () => {
     { 
       id: 1, 
       title: 'High Fashion Model & Editorial', 
-      icon: '👗', 
-      duration: '6-10 Months', 
-      price: '₿ 48,000', 
+      icon: '', 
+      // duration: '6-10 Months', 
+      // price: '₿ 48,000', 
       color: '#ec4899',
       description: 'Master high-fashion poses, expressions, and editorial techniques for top magazines and designers.'
     },
     { 
       id: 2, 
       title: 'Runway/Catwalk Model', 
-      icon: '👠', 
-      duration: '4-8 Months', 
-      price: '₿ 35,000', 
+      icon: '', 
+      // duration: '4-8 Months', 
+      // price: '₿ 35,000', 
       color: '#f59e0b',
       description: 'Perfect your walk, posture, and stage presence for international fashion weeks and shows.'
     },
     { 
       id: 3, 
       title: 'Commercial Model', 
-      icon: '📺', 
-      duration: '3-6 Months', 
-      price: '₿ 28,000', 
+      icon: '', 
+      // duration: '3-6 Months', 
+      // price: '₿ 28,000', 
       color: '#3b82f6',
       description: 'Learn versatile modeling for TV commercials, print ads, catalogs, and brand campaigns.'
     },
     { 
       id: 4, 
       title: 'Photo Model', 
-      icon: '📸', 
-      duration: '3-6 Months', 
-      price: '₿ 25,000', 
+      icon: '', 
+      // duration: '3-6 Months', 
+      // price: '₿ 25,000', 
       color: '#8b5cf6',
       description: 'Master lighting, angles, and expressions for stunning portfolio and fashion photography.'
     },
     { 
       id: 5, 
       title: 'Fitness Model', 
-      icon: '💪', 
-      duration: '4-8 Months', 
-      price: '₿ 32,000', 
+      icon: '', 
+      // duration: '4-8 Months', 
+      // price: '₿ 32,000', 
       color: '#10b981',
       description: 'Combine fitness training with modeling for athletic brands, fitness magazines, and sportswear.'
     },
     { 
       id: 6, 
       title: 'Plus Size & Curve Model', 
-      icon: '👑', 
-      duration: '4-8 Months', 
-      price: '₿ 30,000', 
+      icon: '', 
+      // duration: '4-8 Months', 
+      // price: '₿ 30,000', 
       color: '#ef4444',
       description: 'Embrace body diversity and excel in curve modeling for inclusive fashion brands.'
     },
     { 
       id: 7, 
       title: 'Parts Model', 
-      icon: '🖐️', 
-      duration: '2-4 Months', 
-      price: '₿ 18,000', 
+      icon: '', 
+      // duration: '2-4 Months', 
+      // price: '₿ 18,000', 
       color: '#a855f7',
       description: 'Specialize in hands, feet, or other features for jewelry, cosmetics, and product ads.'
     },
@@ -289,7 +289,7 @@ const Courses = () => {
                 <div style={styles.courseDetails}>
                   <span style={styles.courseDuration}>{course.duration}</span>
                   <span style={styles.coursePrice}>{course.price}</span>
-                  <span>Full Program Fee</span>
+                  {/* <span>Full Program Fee</span> */}
                 </div>
               </div>
               <div className="arrow-icon" style={styles.arrowIcon}>→</div>
