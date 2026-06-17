@@ -362,9 +362,9 @@ const RegistrationForm = () => {
   ];
 
   const durationOptions = [
-    { value: '6-10 Months', label: '📘 3 Months ' },
-    { value: '4-8 Months', label: '📗 6 Months ' },
-    { value: '3-6 Months', label: '📙 10 Months ' },
+    { value: '3 Months', label: '📘 3 Months ' },
+    { value: '6 Months', label: '📗 6 Months ' },
+    { value: '10 Months', label: '📙 10 Months ' },
     // { value: '2-4 Months', label: '📕 2-4 Months - Parts Model' },
   ];
 
