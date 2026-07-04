@@ -627,7 +627,7 @@ const About = () => {
 
       {/* Welcome Banner */}
       <div style={styles.welcomeBanner}>
-        <h1 style={styles.welcomeTitle}>✨ Welcome to Nexus Modeling School & Management ✨</h1>
+        <h1 style={styles.welcomeTitle}>Welcome to Nexus Modeling School & Management </h1>
         <p style={styles.welcomeText}>
           This is a Modeling School & Modeling Agency Based in Ethiopia. 
           We specialize in professional modeling training, talent casting, event management, 

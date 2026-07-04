@@ -53,7 +53,7 @@ const Home = () => {
       } else {
         // Fallback to demo data if API fails
         setStats({
-          totalStudents: 156,
+          totalStudents: 0,
           approvedStudents: 142,
           graduates: 89,
           experts: 12,
@@ -67,7 +67,7 @@ const Home = () => {
       toast.error('Could not load live statistics');
       // Fallback data
       setStats({
-        totalStudents: 156,
+        totalStudents: 0,
         approvedStudents: 142,
         graduates: 89,
         experts: 12,
