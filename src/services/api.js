@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://nexus.endawokefenta.com/api',
+  baseURL: process.env.REACT_APP_API_URL || 'https://nexus.fancypastryacademy.com/api',
   timeout: 30000,
 });
 
