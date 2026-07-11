@@ -736,7 +736,7 @@ const RegistrationForm = () => {
             onFocus={() => handleFocus('age')}
             onBlur={handleBlur}
             style={inputStyle}
-            min="15"
+            min="4"
             max="60"
           />
           
