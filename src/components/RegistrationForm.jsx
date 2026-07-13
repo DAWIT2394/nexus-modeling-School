@@ -365,13 +365,12 @@ const RegistrationForm = () => {
     { value: '3 Months', label: '📘 3 Months ' },
     { value: '6 Months', label: '📗 6 Months ' },
     { value: '10 Months', label: '📙 10 Months ' },
-    // { value: '2-4 Months', label: '📕 2-4 Months - Parts Model' },
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate form data
+    // Validate required fields
     if (!formData.fullName || !formData.age || !formData.sex || !formData.phone || !formData.idNumber || !formData.course) {
       setMessage({
         type: 'error',
@@ -381,9 +380,30 @@ const RegistrationForm = () => {
       return;
     }
 
+    // Validate phone number (basic validation)
+    if (!formData.phone || formData.phone.length < 9) {
+      setMessage({
+        type: 'error',
+        text: 'Please enter a valid phone number',
+      });
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+      return;
+    }
+
+    // Convert age to number if it's a string
+    const ageValue = parseInt(formData.age);
+    if (isNaN(ageValue)) {
+      setMessage({
+        type: 'error',
+        text: 'Please enter a valid age',
+      });
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+      return;
+    }
+
     const data = new FormData();
     data.append('fullName', formData.fullName);
-    data.append('age', formData.age);
+    data.append('age', ageValue); // Send as number
     data.append('weight', formData.weight || '0');
     data.append('height', formData.height || '0');
     data.append('sex', formData.sex);
@@ -434,9 +454,13 @@ const RegistrationForm = () => {
       }, 5000);
     } catch (error) {
       console.error('Registration error:', error);
+      
+      // Check if it's an age validation error from backend
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      
       setMessage({
         type: 'error',
-        text: error.response?.data?.message || 'Registration failed. Please try again.',
+        text: errorMessage,
       });
       
       setTimeout(() => {
@@ -736,8 +760,6 @@ const RegistrationForm = () => {
             onFocus={() => handleFocus('age')}
             onBlur={handleBlur}
             style={inputStyle}
-            min="4"
-            max="60"
           />
           
           <input
