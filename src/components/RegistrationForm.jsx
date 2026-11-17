@@ -607,10 +607,10 @@ const RegistrationForm = () => {
         </div>
         <div style={scheduleGridStyle}>
           <div style={scheduleItemStyle}>
-            <span>📆 ማክሰኞ</span> <span>9-11 ሰዓት</span>
+            <span>📆 ማክሰኞ</span> <span>10-12 ሰዓት</span>
           </div>
           <div style={scheduleItemStyle}>
-            <span>📆 ሀሙስ</span> <span>9-11 ሰዓት</span>
+            <span>📆 ሀሙስ</span> <span>10-12 ሰዓት</span>
           </div>
           <div style={scheduleItemStyle}>
             <span>📆 ቅዳሜ</span> <span>4-6 ሰዓት</span>
@@ -689,18 +689,18 @@ const RegistrationForm = () => {
         <div style={pricingGridStyle}>
           <div style={pricingItemStyle}>
             <div style={pricingDurationStyle}>📘 3 ወር ኮርስ</div>
-            <div style={pricingFeeStyle}>3,000 ብር</div>
+            <div style={pricingFeeStyle}>5,000 ብር</div>
             <div style={{ fontSize: '11px', color: '#6b7280' }}>ወርሃዊ ክፍያ</div>
           </div>
           <div style={pricingItemStyle}>
             <div style={pricingDurationStyle}>📗 6 ወር ኮርስ</div>
-            <div style={pricingFeeStyle}>2,500 ብር</div>
+            <div style={pricingFeeStyle}>4000 ብር</div>
             <div style={{ fontSize: '11px', color: '#6b7280' }}>ወርሃዊ ክፍያ</div>
           </div>
           <div style={pricingItemStyle}>
             <span style={cocBadgeStyle}>✓ COC አለው</span>
             <div style={pricingDurationStyle}>📕 10 ወር ኮርስ</div>
-            <div style={pricingFeeStyle}>2,500 ብር</div>
+            <div style={pricingFeeStyle}>4000 ብር</div>
             <div style={{ fontSize: '11px', color: '#6b7280' }}>ወርሃዊ ክፍያ</div>
           </div>
         </div>
