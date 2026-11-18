@@ -615,6 +615,9 @@ const RegistrationForm = () => {
           <div style={scheduleItemStyle}>
             <span>📆 ቅዳሜ</span> <span>4-6 ሰዓት</span>
           </div>
+           <div style={scheduleItemStyle}>
+            <span>📆 እሁድ </span> <span> 4-6 ሰዓት</span>
+          </div>
         </div>
         <div style={{ textAlign: 'center', fontSize: '11px', color: '#6b21a5', marginTop: '8px' }}>
           ⏰ Tuesday 9-11 AM | Thursday 9-11 AM | Saturday 4-6 PM
